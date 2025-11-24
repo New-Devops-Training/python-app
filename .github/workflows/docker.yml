@@ -1,0 +1,42 @@
+name: Build, Push & Deploy Python Flask App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-python:
+    runs-on: self-hosted
+
+    steps:
+      - name: Clear Workspace
+        run: |
+          git stash --include-untracked || true
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt || true
+
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "prince0127" --password-stdin
+
+      - name: Build Docker Image
+        run: |
+          docker build -t prince0127/python-app:latest .
+
+      - name: Push Docker Image
+        run: docker push prince0127/python-app:latest
+
+      - name: Deploy Python Container
+        run: |
+          docker stop python-app || true
+          docker rm python-app || true
+
+          docker run -d \
+            --name python-app \
+            -p 3020:3020 \
+            prince0127/python-app:latest

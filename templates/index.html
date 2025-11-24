@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <style>
+        body {
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            background: #222;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        }
+
+        .display {
+            background: black;
+            color: #0f0;
+            font-size: 32px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: right;
+            margin-bottom: 20px;
+            height: 50px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-gap: 10px;
+        }
+
+        button {
+            padding: 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #444;
+            color: white;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        .operator {
+            background: #ff9500;
+        }
+
+        .operator:hover {
+            background: #e08900;
+        }
+
+        .equal {
+            grid-column: span 2;
+            background: #28a745;
+        }
+
+        .equal:hover {
+            background: #218838;
+        }
+    </style>
+
+    <script>
+        function addToDisplay(value) {
+            document.getElementById("display").innerHTML += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById("display").innerHTML = "";
+        }
+
+        function calculate() {
+            try {
+                let result = eval(document.getElementById("display").innerHTML);
+                document.getElementById("display").innerHTML = result;
+            } catch {
+                document.getElementById("display").innerHTML = "Error";
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="calculator">
+    <div id="display" class="display"></div>
+
+    <div class="buttons">
+
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="addToDisplay('/')">/</button>
+        <button onclick="addToDisplay('*')">*</button>
+        <button onclick="addToDisplay('-')">-</button>
+
+        <button onclick="addToDisplay('7')">7</button>
+        <button onclick="addToDisplay('8')">8</button>
+        <button onclick="addToDisplay('9')">9</button>
+        <button class="operator" onclick="addToDisplay('+')">+</button>
+
+        <button onclick="addToDisplay('4')">4</button>
+        <button onclick="addToDisplay('5')">5</button>
+        <button onclick="addToDisplay('6')">6</button>
+
+        <button onclick="addToDisplay('1')">1</button>
+        <button onclick="addToDisplay('2')">2</button>
+        <button onclick="addToDisplay('3')">3</button>
+
+        <button onclick="addToDisplay('0')">0</button>
+        <button onclick="addToDisplay('.')">.</button>
+
+        <button class="equal" onclick="calculate()">=</button>
+
+    </div>
+</div>
+
+</body>
+</html>

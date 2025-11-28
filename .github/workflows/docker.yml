@@ -10,29 +10,29 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Clear Workspace
-        run: |
-          git stash --include-untracked || true
+      # Step 1: Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
+      # Step 2: Install Python dependencies
       - name: Install Python Dependencies
-        run: |
-          pip install -r requirements.txt || true
+        run: pip install -r requirements.txt
 
+      # Step 3: Docker login
       - name: Docker Login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "prince0127" --password-stdin
 
+      # Step 4: Build Docker image
       - name: Build Docker Image
-        run: |
-          docker build -t prince0127/python-app:latest .
+        run: docker build -t prince0127/python-app:latest .
 
+      # Step 5: Push Docker image
       - name: Push Docker Image
         run: docker push prince0127/python-app:latest
 
+      # Step 6: Deploy container
       - name: Deploy Python Container
         run: |
           docker stop python-app || true
           docker rm python-app || true
-          docker run -d \
-            --name python-app \
-            -p 3020:3020 \
-            prince0127/python-app:latest
+          docker run -d --name python-app -p 3020:3020 prince0127/python-app:latest
